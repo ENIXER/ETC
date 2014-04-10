@@ -1,10 +1,12 @@
-﻿window.confirm=function(){
-	return true;
-};
-var next='None';
+﻿var next='None';
 var clicking=false;
 var speedbaking=false;
+var resettable=false;
 var timer;
+var resetRatio=0.15;
+var wrinklersNum=0;
+var cookiesGetLastGame;
+var resetGoldenBaseNum=125;
 function startClicking(){
 	timer=setInterval('Game.ClickCookie()' , 100);
 }
@@ -12,16 +14,42 @@ function stopClicking(){
 	clearInterval(timer);
 }
 function resetnum(){
-	console.log(Beautify(Game.cookiesReset*0.15));
+	return Game.cookiesReset*resetRatio;
 }
-var buy=function(){
-	if(Game.cookiesEarned>Game.cookiesReset*0.15 && Game.cookiesEarned>1e+12){
-		Game.Reset();
-		return;
+function gameReset(){
+	if(resettable){
+		cookiesGetLastGame=Game.cookiesEarned;
+		Game.Reset(1);
+		resettable=false;
 	}
+	if(Game.goldenClicksLocal>=resetGoldenNum() && Game.frenzy==0 && Game.goldenCookie.chain==0 && Game.clickFrenzy==0){
+		resettable=true;
+	}
+}
+function resetGoldenNum(){
+	return resetGoldenBaseNum*(Game.Has('Lucky day')?2:1)*(Game.Has('Serendipity')?2:1);
+}
+function currentCps(){
+	return Game.cookiesPs*((Game.frenzy>0)?Game.frenzyPower:1);
+}
+function goldenClick(){
 	if(Game.goldenCookie.life>0){
 		Game.goldenCookie.click();
 	}
+}
+function seasonPopupClick(){
+	if(Game.seasonPopup.life>0&&(Game.seasonPopup.life<Game.fps||Game.frenzy>0)){
+		Game.seasonPopup.click();
+	}
+}
+function wrinklersClick(){
+	for(var i in Game.wrinklers){
+		if(Game.frenzy==0&&Game.wrinklers[i].sucked>currentCps()*60){
+			Game.wrinklers[i].hp=0;
+		}
+	}
+}
+function cookieClicking(){
 	if((Game.clickFrenzy>0||Game.cookiesPs<=Game.mouseCps()*10||speedbaking)&&!clicking){
 		startClicking();
 		clicking=true;
@@ -30,17 +58,13 @@ var buy=function(){
 		stopClicking();
 		clicking=false;
 	}
-	if(Game.seasonPopup.life>0){
-		Game.seasonPopup.click();
-	}
-	if(Game.frenzy==0){
-		var wrinklers=Game.wrinklers;
-		for(var i=0;i<10;i++){
-			if(wrinklers[i].sucked>Game.cookiesPs*30){
-				wrinklers[i].hp=0;
-			}
-		}
-	}
+}
+var buy=function(){
+	gameReset();
+	seasonPopupClick();
+	wrinklersClick();
+	goldenClick();
+	cookieClicking();
 	if(Game.BuildingsOwned == 0){
 		if(Game.cookies>=15){
 			Game.Objects['Cursor'].buy();
@@ -66,6 +90,7 @@ var buy=function(){
 			var ivalue=0;
 			var name=Game.UpgradesInStore[i].name;
 			var gain=0;
+			var twait=(Game.UpgradesInStore[i].getPrice()+addition)/currentCps();
 			if(iwait<=300){
 				switch(name){
 				case 'Reinforced index finger':
@@ -96,6 +121,12 @@ var buy=function(){
 				case 'Sextillion fingers':
 					gain=200*(Game.BuildingsOwned-Game.Objects['Cursor'].amount);
 					break;
+				case 'Septillion fingers':
+					gain=400*(Game.BuildingsOwned-Game.Objects['Cursor'].amount);
+					break;
+				case 'Octillion fingers':
+					gain=800*(Game.BuildingsOwned-Game.Objects['Cursor'].amount);
+					break;
 				case 'Forwards from grandma':
 					gain=0.3*Game.Objects['Grandma'].amount;
 					break;
@@ -112,6 +143,7 @@ var buy=function(){
 				case 'Grandmas\' grandmas':
 				case 'Antigrandmas':
 				case 'Rainbow grandmas':
+				case 'Aging agents':
 					gain=Game.Objects['Grandma'].cps()*Game.Objects['Grandma'].amount;
 					break;
 				case 'Cheap hoes':
@@ -121,6 +153,7 @@ var buy=function(){
 				case 'Cookie trees':
 				case 'Genetically-modified cookies':
 				case 'Gingerbread scarecrows':
+				case 'Pulsar sprinklers':
 					gain=Game.Objects['Farm'].cps()*Game.Objects['Farm'].amount;
 					break;
 				case 'Sturdier conveyor belts':
@@ -130,6 +163,7 @@ var buy=function(){
 				case 'Sweatshop':
 				case 'Radium reactors':
 				case 'Recombobulators':
+				case 'Deep-bake process':
 					gain=Game.Objects['Factory'].cps()*Game.Objects['Factory'].amount;
 					break;
 				case 'Sugar gas':
@@ -139,6 +173,7 @@ var buy=function(){
 				case 'Ultradrill':
 				case 'Ultimadrill':
 				case 'H-bomb mining':
+				case 'Coreforge':
 					gain=Game.Objects['Mine'].cps()*Game.Objects['Mine'].amount;
 					break;
 				case 'Vanilla nebulae':
@@ -148,6 +183,7 @@ var buy=function(){
 				case 'Frequent flyer':
 				case 'Warp drive':
 				case 'Chocolate monoliths':
+				case 'Generation ship':
 					gain=Game.Objects['Shipment'].cps()*Game.Objects['Shipment'].amount;
 					break;
 				case 'Antimony':
@@ -157,6 +193,7 @@ var buy=function(){
 				case 'True chocolate':
 				case 'Ambrosia':
 				case 'Aqua crustulae':
+				case 'Origin crucible':
 					gain=Game.Objects['Alchemy lab'].cps()*Game.Objects['Alchemy lab'].amount;
 					break;
 				case 'Ancient tablet':
@@ -166,6 +203,7 @@ var buy=function(){
 				case 'Soul bond':
 				case 'Sanity dance':
 				case 'Brane transplant':
+				case 'Deity-sized portals':
 					gain=Game.Objects['Portal'].cps()*Game.Objects['Portal'].amount;
 					break;
 				case 'Flux capacitors':
@@ -175,6 +213,7 @@ var buy=function(){
 				case 'Quantum conundrum':
 				case 'Causality enforcer':
 				case 'Yestermorrow comparators':
+				case 'Far future enactment':
 					gain=Game.Objects['Time machine'].cps()*Game.Objects['Time machine'].amount;
 					break;
 				case 'Sugar bosons':
@@ -184,6 +223,7 @@ var buy=function(){
 				case 'Large macaron collider':
 				case 'Big bang bake':
 				case 'Reverse cyclotrons':
+				case 'Nanocosmics':
 					gain=Game.Objects['Antimatter condenser'].cps()*Game.Objects['Antimatter condenser'].amount;
 					break;
 				case 'Gem polish':
@@ -193,6 +233,7 @@ var buy=function(){
 				case 'Chocolate light':
 				case 'Grainbow':
 				case 'Pure cosmic light':
+				case 'Glow-in-the-dark':
 					gain=Game.Objects['Prism'].cps()*Game.Objects['Prism'].amount;
 					break;
 				case 'Oatmeal raisin cookies':
@@ -263,6 +304,14 @@ var buy=function(){
 				case 'Eternal heart biscuits':
 					gain=Game.cookiesPs/Game.globalCpsMult*0.25;
 					break;
+				case 'Rose macarons':
+				case 'Lemon macarons':
+				case 'Chocolate macarons':
+				case 'Pistachio macarons':
+				case 'Hazelnut macarons':
+				case 'Violet macarons':
+					gain=Game.cookiesPs/Game.globalCpsMult*0.3;
+					break;
 				case 'Kitten helpers':
 					var milkMult=Game.Has('Santa\'s milk and cookies')?1.05:1;
 					gain=Game.cookiesPs*Game.milkProgress*0.05*milkMult;
@@ -273,6 +322,7 @@ var buy=function(){
 					break;
 				case 'Kitten engineers':
 				case 'Kitten overseers':
+				case 'Kitten managers':
 					var milkMult=Game.Has('Santa\'s milk and cookies')?1.05:1;
 					gain=Game.cookiesPs*Game.milkProgress*0.2*milkMult;
 					break;
@@ -366,6 +416,7 @@ var buy=function(){
 				case 'Titanium mouse':
 				case 'Adamantium mouse':
 				case 'Unobtainium mouse':
+				case 'Eludium mouse':
 					if(Game.cookies>Game.Upgrades[name].getPrice()){
 						Game.Upgrades[name].buy();
 						return;
