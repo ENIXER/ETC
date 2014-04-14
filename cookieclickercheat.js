@@ -1,4 +1,7 @@
-﻿var next='None';
+﻿Game.RequiresConfirmation=function(upgrade,prompt){
+	upgrade.clickFunction=function(){Game.UpgradesById[upgrade.id].buy(1);}
+}
+var next='None';
 var clicking=false;
 var speedbaking=false;
 var resettable=false;
@@ -6,7 +9,7 @@ var timer;
 var resetRatio=0.15;
 var wrinklersNum=0;
 var cookiesGetLastGame;
-var resetGoldenBaseNum=125;
+var resetGoldenBaseNum=300;
 function startClicking(){
 	timer=setInterval('Game.ClickCookie()' , 100);
 }
@@ -417,6 +420,7 @@ var buy=function(){
 				case 'Adamantium mouse':
 				case 'Unobtainium mouse':
 				case 'Eludium mouse':
+				case 'Wishalloy mouse':
 					if(Game.cookies>Game.Upgrades[name].getPrice()){
 						Game.Upgrades[name].buy();
 						return;
