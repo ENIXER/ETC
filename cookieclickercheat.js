@@ -395,7 +395,6 @@ var buy=function(){
 				case 'Designer cocoa beans':
 				case 'Ritual rolling pins':
 				case 'Underworld ovens':
-				case 'One mind':
 				case 'Exotic nuts':
 				case 'Arcane sugar':
 				case 'Elder Pact':
@@ -406,6 +405,11 @@ var buy=function(){
 						return;
 					}
 					break;
+				case 'One mind':
+					if(Game.cookies>Game.Upgrades[name].getPrice(){
+						Game.Upgrades[name].earn();
+						return;
+					}
 				case 'Communal brainsweep':
 					if(Game.Has('Skull cookies')&&Game.Has('Ghost cookies')&&Game.Has('Bat cookies')
 					&&Game.Has('Slime cookies')&&Game.Has('Pumpkin cookies')&&Game.Has('Eyeball cookies')
