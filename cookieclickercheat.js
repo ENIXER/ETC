@@ -1,7 +1,4 @@
-﻿Game.RequiresConfirmation=function(upgrade,prompt){
-	upgrade.clickFunction=function(){Game.UpgradesById[upgrade.id].buy(1);}
-}
-var next='None';
+﻿var next='None';
 var clicking=false;
 var speedbaking=false;
 var resettable=false;
@@ -315,20 +312,6 @@ var buy=function(){
 				case 'Violet macarons':
 					gain=Game.cookiesPs/Game.globalCpsMult*0.3;
 					break;
-				case 'Kitten helpers':
-					var milkMult=Game.Has('Santa\'s milk and cookies')?1.05:1;
-					gain=Game.cookiesPs*Game.milkProgress*0.05*milkMult;
-					break;
-				case 'Kitten workers':
-					var milkMult=Game.Has('Santa\'s milk and cookies')?1.05:1;
-					gain=Game.cookiesPs*Game.milkProgress*0.1*milkMult;
-					break;
-				case 'Kitten engineers':
-				case 'Kitten overseers':
-				case 'Kitten managers':
-					var milkMult=Game.Has('Santa\'s milk and cookies')?1.05:1;
-					gain=Game.cookiesPs*Game.milkProgress*0.2*milkMult;
-					break;
 				case 'Season switcher':
 				case 'Ghostly biscuit':
 					if(Game.Has('One mind')&&!Game.Has('Elder Pact')){
@@ -396,9 +379,9 @@ var buy=function(){
 				case 'Ritual rolling pins':
 				case 'Underworld ovens':
 				case 'Exotic nuts':
+				case 'Communal brainsweep':
 				case 'Arcane sugar':
 				case 'Elder Pact':
-				case 'Elder Pledge':
 				case 'Sacrificial rolling pins':
 					if(Game.cookies>Game.Upgrades[name].getPrice()){
 						Game.Upgrades[name].buy();
@@ -406,14 +389,12 @@ var buy=function(){
 					}
 					break;
 				case 'One mind':
-					if(Game.cookies>Game.Upgrades[name].getPrice(){
+					if(Game.cookies>Game.Upgrades[name].getPrice()){
 						Game.Upgrades[name].earn();
 						return;
 					}
-				case 'Communal brainsweep':
-					if(Game.Has('Skull cookies')&&Game.Has('Ghost cookies')&&Game.Has('Bat cookies')
-					&&Game.Has('Slime cookies')&&Game.Has('Pumpkin cookies')&&Game.Has('Eyeball cookies')
-					&&Game.Has('Spider cookies')&&Game.cookies>Game.Upgrades[name].getPrice()){
+				case 'Elder Pledge':
+					if(Game.cookies>Game.Upgrades[name].getPrice()){
 						Game.Upgrades[name].buy();
 						return;
 					}
@@ -432,6 +413,11 @@ var buy=function(){
 					break;
 				case 'Lucky day':
 				case 'Serendipity':
+				case 'Kitten helpers':
+				case 'Kitten workers':
+				case 'Kitten engineers':
+				case 'Kitten overseers':
+				case 'Kitten managers':
 				case 'Get lucky':
 					if(Game.cookies>Game.Upgrades[name].getPrice()){
 						Game.Upgrades[name].buy();
