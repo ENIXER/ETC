@@ -7,22 +7,22 @@ Problem Statement
 林檎は熟すと木から垂直に落ち、地面にぶつかると砕ける。林檎が砕けていれば、アリは破片を巣に持ち帰ることができる。
 ところが、木の枝が林檎の真下にあると、林檎が枝にぶつかってしまって落ちてこない。
 
-アリは、何個分の林檎の破片を巣に持ち帰ることができるだろうか？
+あなたの仕事は、アリが何個分の林檎を巣に持ち帰ることができるかを求めるプログラムを作成することである。
 
 Input
 -
 入力は、以下の形式で表される。
 
->n<br>
->bx<sub>1</sub> by<sub>1</sub><br>
->bx<sub>2</sub> by<sub>2</sub><br>
->...<br>
->bx<sub>n</sub> by<sub>n</sub><br>
->m<br>
->ax<sub>1</sub> ay<sub>1</sub><br>
->ax<sub>2</sub> ay<sub>2</sub><br>
->...<br>
->ax<sub>m</sub> ay<sub>m</sub><br>
+> n<br>
+> bx<sub>1</sub> by<sub>1</sub><br>
+> bx<sub>2</sub> by<sub>2</sub><br>
+> ...<br>
+> bx<sub>n</sub> by<sub>n</sub><br>
+> m<br>
+> ax<sub>1</sub> ay<sub>1</sub><br>
+> ax<sub>2</sub> ay<sub>2</sub><br>
+> ...<br>
+> ax<sub>m</sub> ay<sub>m</sub><br>
 
 nは枝の本数、bx,byは各枝の座標、nは林檎の数、ax,ayは各林檎の座標を表す。
 
