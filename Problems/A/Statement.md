@@ -72,4 +72,5 @@ Sample Input 2
     10 6
 
 Sample Output 2
+-
     2
