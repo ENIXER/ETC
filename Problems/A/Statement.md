@@ -37,7 +37,7 @@ Output
 -
 出力は、アリが持ち帰ることができる林檎の個数を1行で出力せよ。
 
-Sample Input
+Sample Input 1
 -
     3
     1 1
@@ -48,6 +48,28 @@ Sample Input
     4 2
     6 2
 
-Sample Output
+Sample Output 1
 -
+    2
+
+Sample Input 2
+-
+    10
+    1 10
+    2 9
+    3 8
+    4 7
+    5 6
+    6 5
+    7 4
+    8 3
+    9 2
+    10 1
+    4
+    1 6
+    3 6
+    7 6
+    10 6
+
+Sample Output 2
     2
